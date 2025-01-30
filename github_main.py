@@ -36,27 +36,11 @@ summary_template = """
 
 
 def get_gmail_service():
-    """Authenticate and return Gmail API service using InstalledAppFlow."""
-    creds = None
-    token_file = 'token.pickle'
-
-    if os.path.exists(token_file):
-        with open(token_file, 'rb') as token:
-            creds = pickle.load(token)
-
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
-
-            creds = flow.run_local_server(port=0)
-
-        with open(token_file, 'wb') as token:
-            pickle.dump(creds, token)
-
+    creds = service_account.Credentials.from_service_account_info(
+        json.loads(os.environ['GOOGLE_CREDENTIALS']),
+        scopes=SCOPES
+    )
     return build('gmail', 'v1', credentials=creds)
-
 
 def clean_summary_text(text):
     """Clean and filter out unnecessary headers or artifacts."""
@@ -152,7 +136,7 @@ def main():
     service = get_gmail_service()
     
     # Initialize Vertex AI and Gemini
-    vertexai.init(project='project=os.getenv('PROJECT_ID')', location='us-central1')
+    vertexai.init(project=os.getenv('PROJECT_ID'), location='us-central1')
     model = GenerativeModel("gemini-pro")
     
     # Get unread emails
@@ -189,7 +173,7 @@ def main():
         archive_email(service, message['id'])
     
     if summaries:
-        send_summary_email(service, summaries, 'os.getenv('EMAIL_TO')')
+        send_summary_email(service, summaries, os.getenv('EMAIL_TO'))
         print(f"Processed and summarized {len(summaries)} emails")
     else:
         print("No unread messages found")
