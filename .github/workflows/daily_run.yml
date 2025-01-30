@@ -16,9 +16,6 @@ jobs:
       - name: Force fresh pull
         run: git fetch --prune --unshallow
 
-      - name: Check Python version
-        run: python --version
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -32,12 +29,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install python-dotenv google-auth-oauthlib google-auth-httplib2 google-api-python-client google-cloud-aiplatform
 
-      - name: Install Vertex AI SDK
-        run: pip install google-cloud-aiplatform --upgrade
-
-      - name: Run script
-        env:
-          EMAIL_TO: ${{ secrets.EMAIL_TO }}
-          PROJECT_ID: ${{ secrets.PROJECT_ID }}
-          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-        run: python github_main.py
+      - name: Check Python version  # This
