@@ -1,20 +1,12 @@
 import base64
-import os.path
+import os
+import json  # Need to add this
+import datetime
 import vertexai
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from googleapiclient.discovery import build
 from vertexai.generative_models import GenerativeModel
 from email.mime.text import MIMEText
-from google.auth import default
-import datetime
-import re
-import pickle
-#import functions_framework
 from google.oauth2 import service_account
-from dotenv import load_dotenv
-load_dotenv()
+from googleapiclient.discovery import build
 
 # Updated Gmail API scopes
 SCOPES = [
