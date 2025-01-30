@@ -32,8 +32,14 @@ jobs:
       - name: Check Python version
         run: python --version
 
-      - name: Check Vertex AI installation  # This step checks if vertexai is installed
+      - name: Debug installed packages
+        run: pip list  # List all installed packages to verify vertexai is there
+
+      - name: Check Vertex AI installation  # Log Vertex AI version if installed
         run: python -c "import vertexai; print(vertexai.__version__)"
+
+      - name: Show environment variables  # Log environment variables before running the script
+        run: env
 
       - name: Run script
         env:
