@@ -128,8 +128,8 @@ def main():
     service = get_gmail_service()
     
     # Initialize Vertex AI and Gemini
-    project_id = os.getenv('PROJECT_ID')  # Get project ID first
-    vertexai.init(project=project_id, location='us-central1')  # Then use it
+    project_id = os.getenv('PROJECT_ID')
+    vertexai.init(project=project_id, location='us-central1')
     model = GenerativeModel("gemini-pro")
     
     # Get unread emails
@@ -139,7 +139,6 @@ def main():
     messages = results.get('messages', [])  # Extract messages safely
     summaries = []
     for message in messages:
-
         msg = service.users().messages().get(userId='me', id=message['id']).execute()
         
         subject = next((header['value'] for header in msg['payload']['headers'] if header['name'] == 'Subject'), 'No Subject')
@@ -170,8 +169,4 @@ def main():
         print(f"Processed and summarized {len(summaries)} emails")
     else:
         print("No unread messages found")
-
-if __name__ == "__main__":
-    # Skip functions_framework and call main() directly
-    main()
 
