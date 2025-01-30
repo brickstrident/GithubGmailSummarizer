@@ -128,7 +128,8 @@ def main():
     service = get_gmail_service()
     
     # Initialize Vertex AI and Gemini
-    vertexai.init(project=os.getenv('PROJECT_ID'), location='us-central1')
+    project_id = os.getenv('PROJECT_ID')  # Get project ID first
+    vertexai.init(project=project_id, location='us-central1')  # Then use it
     model = GenerativeModel("gemini-pro")
     
     # Get unread emails
