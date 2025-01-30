@@ -29,4 +29,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install python-dotenv google-auth-oauthlib google-auth-httplib2 google-api-python-client google-cloud-aiplatform
 
-      - name: Check Python version  # This
+      - name: Check Python version
+        run: python --version
+
+      - name: Check Vertex AI installation  # This step checks if vertexai is installed
+        run: python -c "import vertexai; print(vertexai.__version__)"
+
+      - name: Run script
+        env:
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+        run: python github_main.py
